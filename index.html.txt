@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Menú de Hamburguesas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: sans-serif; background: #111; color: #fff; }
+
+    .carousel {
+      display: flex;
+      width: 500vw;
+      height: 100vh;
+      transition: transform 0.4s ease;
+    }
+
+    .burger-section {
+      flex: 0 0 100vw;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .burger-section img {
+      max-height: 80vh;
+      max-width: 90vw;
+      object-fit: contain;
+      cursor: pointer;
+    }
+
+    .ingredients {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px;
+      transition: top 0.4s ease;
+    }
+
+    .burger-section.show-ingredients .ingredients {
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div id="carousel" class="carousel">
+  <div class="burger-section">
+    <img src="hamburguesas1.jpeg" alt="Hamburguesa 1">
+    <div class="ingredients">
+      <h2>Ingredientes</h2>
+      <ul>
+        <li>Pan artesanal</li>
+        <li>Carne de res</li>
+        <li>Queso cheddar</li>
+        <li>Lechuga</li>
+        <li>Tomate</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="burger-section">
+    <img src="hamburguesas2.jpeg" alt="Hamburguesa 2">
+    <div class="ingredients">
+      <h2>Ingredientes</h2>
+      <ul>
+        <li>Pan brioche</li>
+        <li>Pollo empanizado</li>
+        <li>Queso suizo</li>
+        <li>Mostaza dulce</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="burger-section">
+    <img src="hamburguesas3.jpeg" alt="Hamburguesa 3">
+    <div class="ingredients">
+      <h2>Ingredientes</h2>
+      <ul>
+        <li>Pan negro</li>
+        <li>Carne doble</li>
+        <li>Cebolla caramelizada</li>
+        <li>Salsa BBQ</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="burger-section">
+    <img src="hamburguesas4.jpeg" alt="Hamburguesa 4">
+    <div class="ingredients">
+      <h2>Ingredientes</h2>
+      <ul>
+        <li>Pan de papa</li>
+        <li>Carne vegetariana</li>
+        <li>Queso vegano</li>
+        <li>Espinaca</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="burger-section">
+    <img src="hamburguesas5.jpeg" alt="Hamburguesa 5">
+    <div class="ingredients">
+      <h2>Ingredientes</h2>
+      <ul>
+        <li>Pan con ajonjolí</li>
+        <li>Carne angus</li>
+        <li>Queso azul</li>
+        <li>Champiñones salteados</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  const carousel = document.getElementById('carousel');
+  let index = 0;
+  const sections = document.querySelectorAll('.burger-section');
+
+  // Swipe horizontal
+  let startX = 0;
+  document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const endX = e.changedTouches[0].clientX;
+    const diff = startX - endX;
+    if (diff > 50 && index < sections.length - 1) index++;
+    else if (diff < -50 && index > 0) index--;
+    carousel.style.transform = `translateX(-${index * 100}vw)`;
+  });
+
+  // Swipe vertical para ingredientes
+  let startY = 0;
+  sections.forEach(section => {
+    section.addEventListener('touchstart', e => startY = e.touches[0].clientY);
+    section.addEventListener('touchend', e => {
+      const endY = e.changedTouches[0].clientY;
+      const diffY = startY - endY;
+      if (diffY > 50) section.classList.add('show-ingredients');
+      else if (diffY < -50) section.classList.remove('show-ingredients');
+    });
+  });
+
+  // Tap para alternar ingredientes con click también
+  document.querySelectorAll('.burger-section img').forEach(img => {
+    img.addEventListener('click', () => {
+      const parent = img.closest('.burger-section');
+      parent.classList.toggle('show-ingredients');
+    });
+  });
+</script>
+
+</body>
+</html>
